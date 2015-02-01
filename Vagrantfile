@@ -23,12 +23,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.vm.network "public_network"
 
     # configure le nom de la machine
-    master.vm.hostname = "master.des.lan"
+    master.vm.hostname = "master.education.lan"
 
     # configure une carte réseau
     master.vm.network "private_network", ip: "192.168.200.41"
-    config.vm.synced_folder ".", "/vagrant", disabled: true
-
+    
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -56,106 +55,60 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
   #
+  config.vm.provision "shell", path: "provision/ansible.sh"
 
   end
 
   config.vm.define :client do |client|
     client.vm.box = "centos6"
 
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network "public_network"
-
     # configure le nom de la machine
-    client.vm.hostname = "client.des.lan"
+    client.vm.hostname = "client.education.lan"
 
     # configure une carte réseau
     client.vm.network "private_network", ip: "192.168.200.42"
-    
-    config.vm.synced_folder ".", "/vagrant", disabled: true
 
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
+    # desactive le partage
+    client.vm.synced_folder ".", "/vagrant", disabled: true
+ 
     client.vm.provider "virtualbox" do |vb|
-      # Active la partie graphique de la vm. Si innactif, la vm
-      # fonctionnera en background
-      #vb.gui = true
       vb.name = "client"
       vb.memory = "512"
       vb.cpus = "1"
     end
 
     client.vm.provider "vmware_workstation" do |vw|
-      # Active la partie graphique de la vm. Si innactif, la vm
-      # fonctionnera en background
-      #vb.gui = true
       vw.name = "client"
       vw.memory = "512"
       vw.cpus = "1"
     end
-  
-  # Enable provisioning with chef solo, specifying a cookbooks path, roles
-  # path, and data_bags path (all relative to this Vagrantfile), and adding
-  # some recipes and/or roles.
-  #
-
+    
   end
 
 config.vm.define :client2 do |client2|
     client2.vm.box = "centos6"
 
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network "public_network"
-
     # configure le nom de la machine
-    client2.vm.hostname = "client2.des.lan"
+    client2.vm.hostname = "client2.education.lan"
 
     # configure une carte réseau
     client2.vm.network "private_network", ip: "192.168.200.43"
-    
-    config.vm.synced_folder ".", "/vagrant", disabled: true
 
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
+    # desactive le partage
+    client2.vm.synced_folder ".", "/vagrant", disabled: true
+    
     client2.vm.provider "virtualbox" do |vb|
-      # Active la partie graphique de la vm. Si innactif, la vm
-      # fonctionnera en background
-      #vb.gui = true
       vb.name = "client2"
       vb.memory = "512"
       vb.cpus = "1"
     end
 
     client2.vm.provider "vmware_workstation" do |vw|
-      # Active la partie graphique de la vm. Si innactif, la vm
-      # fonctionnera en background
-      #vb.gui = true
       vw.name = "client2"
       vw.memory = "512"
       vw.cpus = "1"
     end
   
-  # Enable provisioning with chef solo, specifying a cookbooks path, roles
-  # path, and data_bags path (all relative to this Vagrantfile), and adding
-  # some recipes and/or roles.
-  #
-
   end
-
 
 end
