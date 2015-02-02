@@ -26,7 +26,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     master.vm.hostname = "master.education.lan"
 
     # configure une carte réseau
-    master.vm.network "private_network", ip: "192.168.200.41"
+    master.vm.network "private_network", ip: "192.168.200.41", virtualbox__intnet: true
+
+    master.vm.synced_folder ".", "/vagrant", mount_options: ["dmode=775","fmode=664"]
+
+    master.ssh.insert_key = false
     
 
   # Provider-specific configuration so you can fine-tune various
@@ -55,7 +59,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
   #
-  config.vm.provision "shell", path: "provision/ansible.sh"
+  master.vm.provision "shell", path: "provision/ansible.sh"
 
   end
 
@@ -66,7 +70,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     client.vm.hostname = "client.education.lan"
 
     # configure une carte réseau
-    client.vm.network "private_network", ip: "192.168.200.42"
+    client.vm.network "private_network", ip: "192.168.200.42", virtualbox__intnet: true
+
+    client.ssh.insert_key = false
 
     # desactive le partage
     client.vm.synced_folder ".", "/vagrant", disabled: true
@@ -92,7 +98,9 @@ config.vm.define :client2 do |client2|
     client2.vm.hostname = "client2.education.lan"
 
     # configure une carte réseau
-    client2.vm.network "private_network", ip: "192.168.200.43"
+    client2.vm.network "private_network", ip: "192.168.200.43", virtualbox__intnet: true
+
+    client2.ssh.insert_key = false
 
     # desactive le partage
     client2.vm.synced_folder ".", "/vagrant", disabled: true
